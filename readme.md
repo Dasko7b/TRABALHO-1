@@ -1,6 +1,6 @@
 # Sistema de Atendimento em Plantão Psicológico 
 
-##Funções:
+## Funções:
 - [ ] Registrar chegada do estudante à fila de espera 
 - [ ]	Realizar atendimento
 - [ ]	Consultar histórico de atendimentos por CPF
