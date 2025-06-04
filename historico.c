@@ -34,6 +34,8 @@ Historico* inserirNoHistorico(Historico* h, Atendimento a){
 
 };
 
+//Função para imprimir o histórico de atendimentos por curso
+//Feita por Bruno Pedron Rupaner
 void HistoricoPorCurso(Atendimento* h) {
     if (h == NULL || h->pessoa == NULL) {
         printf("Nenhum atendimento registrado.\n");
@@ -79,6 +81,8 @@ void HistoricoPorCurso(Atendimento* h) {
     }
 }
 
+//Função para imprimir o histórico de atendimentos por CPF
+//Feita por Bruno Pedron Rupaner
 void HistoricoAtendimentoCPF(Atendimento* h, char cpf[15]) {
     if (h == NULL || h->pessoa == NULL) {
         printf("Nenhum atendimento registrado.\n");
