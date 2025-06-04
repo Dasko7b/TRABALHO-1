@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lista.h" // Certifique-se que este arquivo está no mesmo diretório ou no include path
+#include "fila.h" // Certifique-se que este arquivo está no mesmo diretório ou no include path
 
 int main() {
     // Aloca memória para o nó cabeça da fila
