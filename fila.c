@@ -60,9 +60,13 @@ void regitrarChegada(Fila* fila, char nome[100], char CPF[15], char curso[50]) {
     }
 }
 
-int realizarAtendimento(Fila* fila, char psicologo[100], char data[10], char resumo[500]) {
+int realizarAtendimento(Fila* fila, Atendimento* cabecaListaAtendimentos, char psicologo[100], char data[10], char resumo[500]) {
     if (fila == NULL || fila->pessoa == NULL) {
         printf("Fila vazia, nenhum atendimento para realizar.\n");
+        return 1;
+    }
+    if (cabecaListaAtendimentos == NULL) {
+        printf("ERRO: Lista de atendimentos não inicializada/passada corretamente.\n");
         return 1;
     }
 
@@ -76,18 +80,74 @@ int realizarAtendimento(Fila* fila, char psicologo[100], char data[10], char res
     printf("  Data: %s\n", data);
     printf("  Resumo: %s\n", resumo);
 
+    if (cabecaListaAtendimentos->pessoa == NULL) {
+        cabecaListaAtendimentos->pessoa = (Pessoa*)malloc(sizeof(Pessoa));
+        if (cabecaListaAtendimentos->pessoa == NULL) {
+            printf("ERRO DE ALOCAÇÃO (Pessoa em Atendimento)\n");
+            return 1;
+        }
+        strncpy(cabecaListaAtendimentos->pessoa->nome, pessoaAtendidaOriginal->nome, 99);
+        cabecaListaAtendimentos->pessoa->nome[99] = '\0';
+        strncpy(cabecaListaAtendimentos->pessoa->CPF, pessoaAtendidaOriginal->CPF, 14);
+        cabecaListaAtendimentos->pessoa->CPF[14] = '\0';
+        strncpy(cabecaListaAtendimentos->pessoa->curso, pessoaAtendidaOriginal->curso, 49);
+        cabecaListaAtendimentos->pessoa->curso[49] = '\0';
+
+        strncpy(cabecaListaAtendimentos->psicologo, psicologo, 99);
+        cabecaListaAtendimentos->psicologo[99] = '\0';
+        strncpy(cabecaListaAtendimentos->data, data, 9);
+        cabecaListaAtendimentos->data[9] = '\0';
+        strncpy(cabecaListaAtendimentos->resumo, resumo, 499);
+        cabecaListaAtendimentos->resumo[499] = '\0';
+        cabecaListaAtendimentos->prox = NULL;
+    } else {
+        Atendimento* novoAtendimento = (Atendimento*)malloc(sizeof(Atendimento));
+        if (novoAtendimento == NULL) {
+            printf("ERRO DE ALOCAÇÃO (Novo Nó de Atendimento)\n");
+            return 1;
+        }
+
+        novoAtendimento->pessoa = (Pessoa*)malloc(sizeof(Pessoa));
+        if (novoAtendimento->pessoa == NULL) {
+            printf("ERRO DE ALOCAÇÃO (Pessoa em Novo Atendimento)\n");
+            free(novoAtendimento);
+            return 1;
+        }
+        strncpy(novoAtendimento->pessoa->nome, pessoaAtendidaOriginal->nome, 99);
+        novoAtendimento->pessoa->nome[99] = '\0';
+        strncpy(novoAtendimento->pessoa->CPF, pessoaAtendidaOriginal->CPF, 14);
+        novoAtendimento->pessoa->CPF[14] = '\0';
+        strncpy(novoAtendimento->pessoa->curso, pessoaAtendidaOriginal->curso, 49);
+        novoAtendimento->pessoa->curso[49] = '\0';
+
+        strncpy(novoAtendimento->psicologo, psicologo, 99);
+        novoAtendimento->psicologo[99] = '\0';
+        strncpy(novoAtendimento->data, data, 9);
+        novoAtendimento->data[9] = '\0';
+        strncpy(novoAtendimento->resumo, resumo, 499);
+        novoAtendimento->resumo[499] = '\0';
+        novoAtendimento->prox = NULL;
+
+        Atendimento* atual = cabecaListaAtendimentos;
+        while (atual->prox != NULL) {
+            atual = atual->prox;
+        }
+        atual->prox = novoAtendimento;
+    }
+
+    Pessoa* pessoaDaFilaParaLiberar = fila->pessoa;
+
     if (fila->proximo == fila) {
-        free(fila->pessoa);
         fila->pessoa = NULL;
     } else {
-        Fila* proximoNo = fila->proximo;
-        free(fila->pessoa);
-
-        fila->pessoa = proximoNo->pessoa;
-        fila->proximo = proximoNo->proximo;
-        
-        free(proximoNo);
+        Fila* proximoNoFila = fila->proximo;
+        fila->pessoa = proximoNoFila->pessoa;
+        fila->proximo = proximoNoFila->proximo;
+        free(proximoNoFila);
     }
+    free(pessoaDaFilaParaLiberar);
+
+    printf("Atendimento registrado e pessoa removida da fila.\n");
     return 0;
 }
 
