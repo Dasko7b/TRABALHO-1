@@ -1,4 +1,5 @@
 #include "fila.h"
+#include "historico.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -60,7 +61,7 @@ void regitrarChegada(Fila* fila, char nome[100], char CPF[15], char curso[50]) {
     }
 }
 
-int realizarAtendimento(Fila* fila, Atendimento* cabecaListaAtendimentos, char psicologo[100], char data[10], char resumo[500]) {
+int realizarAtendimento(Historico* h,Fila* fila, Atendimento* cabecaListaAtendimentos, char psicologo[100], char data[10], char resumo[500]) {
     if (fila == NULL || fila->pessoa == NULL) {
         printf("Fila vazia, nenhum atendimento para realizar.\n");
         return 1;
@@ -79,6 +80,8 @@ int realizarAtendimento(Fila* fila, Atendimento* cabecaListaAtendimentos, char p
     printf("  Psicólogo: %s\n", psicologo);
     printf("  Data: %s\n", data);
     printf("  Resumo: %s\n", resumo);
+
+    Historico* inserirNoHistorico(h, pessoaAtendidaOriginal);
 
     if (cabecaListaAtendimentos->pessoa == NULL) {
         cabecaListaAtendimentos->pessoa = (Pessoa*)malloc(sizeof(Pessoa));
