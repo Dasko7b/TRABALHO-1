@@ -1,115 +1,202 @@
-#include "historico.h"
+#include "fila.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-Historico* inicializarLista() {
-    Historico* lista = (Historico*) malloc(sizeof(Historico));
-    if (lista == NULL) {
-        return NULL; 
+int iniciarFila(Fila* fila) {
+    if (fila == NULL) {
+        return 1;
     }
-
-    lista->proximo = lista;
-
-    return lista;
+    fila->proximo = fila;
+    fila->tem_pessoa = 0;
+    fila->nome[0] = '\0';
+    fila->CPF[0] = '\0';
+    fila->curso[0] = '\0';
+    return 0;
 }
-Historico* inserirNoHistorico(Historico* h, Atendimento a){
 
-    Historico* novoNo = (Historico*) malloc(sizeof(Historico));
-    if (novoNo == NULL) {
-        printf("Erro de alocação de memória.\n");
-        return h;
+int iniciarAtendimentos(Atendimento* atendimento) {
+    if (atendimento == NULL) {
+        return 1;
     }
+    atendimento->prox = NULL;
+    atendimento->tem_pessoa = 0;
+    atendimento->nome[0] = '\0';
+    atendimento->CPF[0] = '\0';
+    atendimento->curso[0] = '\0';
+    atendimento->psicologo[0] = '\0';
+    atendimento->data[0] = '\0';
+    atendimento->resumo[0] = '\0';
+    return 0;
+}
 
-    
-    strcpy(novoNo->atendimento.pessoa->CPF, a.pessoa->CPF);
-    strcpy(novoNo->atendimento.pessoa->nome, a.pessoa->nome);
-    strcpy(novoNo->atendimento.psicologo, a.psicologo);
-    strcpy(novoNo->atendimento.data, a.data);
-    strcpy(novoNo->atendimento.resumo, a.resumo);
-    
-    novoNo->proximo = NULL;
-
-    return novoNo;
-
-};
-
-//Função para imprimir o histórico de atendimentos por curso
-//Feita por Bruno Pedron Rupaner
-void HistoricoPorCurso(Atendimento* h) {
-    if (h == NULL || h->pessoa == NULL) {
-        printf("Nenhum atendimento registrado.\n");
+void regitrarChegada(Fila* fila, char nome[100], char CPF[15], char curso[50]) {
+    if (fila == NULL) {
+        printf("ERRO: Fila principal não alocada/inicializada.\n");
         return;
     }
 
-    char cursosImpressos[100][50];
-    int totalCursos = 0;
-
-    Atendimento* atual = h;
-    while (atual != NULL) {
-        char* cursoAtual = atual->pessoa->curso;
-
-        int jaExiste = 0;
-        for (int i = 0; i < totalCursos; i++) {
-            if (strcmp(cursosImpressos[i], cursoAtual) == 0) {
-                jaExiste = 1;
-                break;
-            }
+    if (fila->tem_pessoa == 0) {
+        strncpy(fila->nome, nome, 99);
+        fila->nome[99] = '\0';
+        strncpy(fila->CPF, CPF, 14);
+        fila->CPF[14] = '\0';
+        strncpy(fila->curso, curso, 49);
+        fila->curso[49] = '\0';
+        fila->tem_pessoa = 1;
+        fila->proximo = fila;
+    } else {
+        Fila* iterador = fila;
+        while (iterador->proximo != fila) {
+            iterador = iterador->proximo;
         }
 
-        if (!jaExiste) {
-            // Cabeçalho do curso
-            printf("\n=== HISTÓRICO DO CURSO: %s ===\n", cursoAtual);
-            Atendimento* temp = h;
-            while (temp != NULL) {
-                if (strcmp(temp->pessoa->curso, cursoAtual) == 0) {
-                    printf("Nome: %s | CPF: %s\n", temp->pessoa->nome, temp->pessoa->CPF);
-                    printf("Psicólogo: %s\n", temp->psicologo);
-                    printf("Data: %s\n", temp->data);
-                    printf("Resumo: %s\n", temp->resumo);
-                    printf("-----------------------------\n");
-                }
-                temp = temp->prox;
-            }
-
-            strncpy(cursosImpressos[totalCursos], cursoAtual, 49);
-            cursosImpressos[totalCursos][49] = '\0';
-            totalCursos++;
+        Fila* novoNoFila = (Fila*)malloc(sizeof(Fila));
+        if (novoNoFila == NULL) {
+            printf("ERRO DE ALOCAÇÃO (Nó da Fila em regitrarChegada)\n");
+            return;
         }
+        strncpy(novoNoFila->nome, nome, 99);
+        novoNoFila->nome[99] = '\0';
+        strncpy(novoNoFila->CPF, CPF, 14);
+        novoNoFila->CPF[14] = '\0';
+        strncpy(novoNoFila->curso, curso, 49);
+        novoNoFila->curso[49] = '\0';
+        novoNoFila->tem_pessoa = 1;
 
-        atual = atual->prox;
+        novoNoFila->proximo = fila;
+        iterador->proximo = novoNoFila;
     }
 }
 
-//Função para imprimir o histórico de atendimentos por CPF
-//Feita por Bruno Pedron Rupaner
-void HistoricoAtendimentoCPF(Atendimento* h, char cpf[15]) {
-    if (h == NULL || h->pessoa == NULL) {
-        printf("Nenhum atendimento registrado.\n");
+int realizarAtendimento(Fila* fila, Atendimento* cabecaListaAtendimentos, char psicologo[100], char data[10], char resumo[500]) {
+    if (fila == NULL || fila->tem_pessoa == 0) {
+        printf("Fila vazia, nenhum atendimento para realizar.\n");
+        return 1;
+    }
+    if (cabecaListaAtendimentos == NULL) {
+        printf("ERRO: Lista de atendimentos não inicializada/passada corretamente.\n");
+        return 1;
+    }
+
+    printf("Atendendo:\n");
+    printf("  Nome: %s\n", fila->nome);
+    printf("  CPF: %s\n", fila->CPF);
+    printf("  Curso: %s\n", fila->curso);
+    printf("  Psicólogo: %s\n", psicologo);
+    printf("  Data: %s\n", data);
+    printf("  Resumo: %s\n", resumo);
+
+    if (cabecaListaAtendimentos->tem_pessoa == 0) {
+        strncpy(cabecaListaAtendimentos->nome, fila->nome, 99);
+        cabecaListaAtendimentos->nome[99] = '\0';
+        strncpy(cabecaListaAtendimentos->CPF, fila->CPF, 14);
+        cabecaListaAtendimentos->CPF[14] = '\0';
+        strncpy(cabecaListaAtendimentos->curso, fila->curso, 49);
+        cabecaListaAtendimentos->curso[49] = '\0';
+        strncpy(cabecaListaAtendimentos->psicologo, psicologo, 99);
+        cabecaListaAtendimentos->psicologo[99] = '\0';
+        strncpy(cabecaListaAtendimentos->data, data, 9);
+        cabecaListaAtendimentos->data[9] = '\0';
+        strncpy(cabecaListaAtendimentos->resumo, resumo, 499);
+        cabecaListaAtendimentos->resumo[499] = '\0';
+        cabecaListaAtendimentos->tem_pessoa = 1;
+        cabecaListaAtendimentos->prox = NULL;
+    } else {
+        Atendimento* novoAtendimento = (Atendimento*)malloc(sizeof(Atendimento));
+        if (novoAtendimento == NULL) {
+            printf("ERRO DE ALOCAÇÃO (Novo Nó de Atendimento)\n");
+            return 1;
+        }
+        strncpy(novoAtendimento->nome, fila->nome, 99);
+        novoAtendimento->nome[99] = '\0';
+        strncpy(novoAtendimento->CPF, fila->CPF, 14);
+        novoAtendimento->CPF[14] = '\0';
+        strncpy(novoAtendimento->curso, fila->curso, 49);
+        novoAtendimento->curso[49] = '\0';
+        strncpy(novoAtendimento->psicologo, psicologo, 99);
+        novoAtendimento->psicologo[99] = '\0';
+        strncpy(novoAtendimento->data, data, 9);
+        novoAtendimento->data[9] = '\0';
+        strncpy(novoAtendimento->resumo, resumo, 499);
+        novoAtendimento->resumo[499] = '\0';
+        novoAtendimento->tem_pessoa = 1;
+        novoAtendimento->prox = NULL;
+
+        Atendimento* atualAtendimento = cabecaListaAtendimentos;
+        while (atualAtendimento->prox != NULL) {
+            atualAtendimento = atualAtendimento->prox;
+        }
+        atualAtendimento->prox = novoAtendimento;
+    }
+
+    if (fila->proximo == fila) {
+        fila->tem_pessoa = 0;
+        fila->nome[0] = '\0';
+        fila->CPF[0] = '\0';
+        fila->curso[0] = '\0';
+    } else {
+        Fila* proximoNoFila = fila->proximo;
+        
+        strncpy(fila->nome, proximoNoFila->nome, 99);
+        fila->nome[99] = '\0';
+        strncpy(fila->CPF, proximoNoFila->CPF, 14);
+        fila->CPF[14] = '\0';
+        strncpy(fila->curso, proximoNoFila->curso, 49);
+        fila->curso[49] = '\0';
+
+        fila->proximo = proximoNoFila->proximo;
+        free(proximoNoFila);
+    }
+
+    printf("Atendimento registrado e pessoa removida da fila.\n");
+    return 0;
+}
+
+int removerDaFila(Fila* fila) {
+    if (fila == NULL || fila->tem_pessoa == 0) {
+        printf("Fila vazia, nada para remover.\n");
+        return 1;
+    }
+
+    printf("Removendo da frente da fila: Nome: %s, CPF: %s\n", fila->nome, fila->CPF);
+
+    if (fila->proximo == fila) {
+        fila->tem_pessoa = 0;
+        fila->nome[0] = '\0';
+        fila->CPF[0] = '\0';
+        fila->curso[0] = '\0';
+        printf("Único elemento da fila removido. Fila agora está vazia.\n");
+    } else {
+        Fila* proximoNo = fila->proximo;
+
+        strncpy(fila->nome, proximoNo->nome, 99);
+        fila->nome[99] = '\0';
+        strncpy(fila->CPF, proximoNo->CPF, 14);
+        fila->CPF[14] = '\0';
+        strncpy(fila->curso, proximoNo->curso, 49);
+        fila->curso[49] = '\0';
+
+        fila->proximo = proximoNo->proximo;
+        free(proximoNo);
+        printf("Primeiro elemento da fila removido com sucesso.\n");
+    }
+    return 0;
+}
+
+void listarFila(Fila* fila) {
+    if (fila == NULL || fila->tem_pessoa == 0) {
+        printf("Fila esta vazia.\n");
         return;
     }
 
-    int encontrou = 0;
-    Atendimento* atual = h;
-    while (atual != NULL) {
-        if (strcmp(atual->pessoa->CPF, cpf) == 0) {
-            if (!encontrou) {
-                printf("\n=== HISTÓRICO DO CPF: %s ===\n", cpf);
-            }
-
-            encontrou = 1;
-
-            printf("Nome: %s | Curso: %s\n", atual->pessoa->nome, atual->pessoa->curso);
-            printf("Psicólogo: %s\n", atual->psicologo);
-            printf("Data: %s\n", atual->data);
-            printf("Resumo: %s\n", atual->resumo);
-            printf("-----------------------------\n");
-        }
-
-        atual = atual->prox;
-    }
-
-    if (!encontrou) {
-        printf("Nenhum atendimento encontrado para o CPF informado.\n");
-    }
+    Fila* atual = fila;
+    printf("--- PESSOAS NA FILA ---\n");
+    do {
+        printf("Nome: %s\n", atual->nome);
+        printf("CPF: %s\n", atual->CPF);
+        printf("Curso: %s\n", atual->curso);
+        printf("------------------------\n");
+        atual = atual->proximo;
+    } while (atual != fila);
 }
