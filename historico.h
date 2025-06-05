@@ -1,18 +1,33 @@
-#include "fila.h"
-#ifndef HISTORICO_H
-#define HISTORICO_H
+#ifndef HISTORICO_ATENDIMENTO_H
+#define HISTORICO_ATENDIMENTO_H
 
+#define MAX_NOME 100
+#define MAX_CPF 15
+#define MAX_CURSO 100
+#define MAX_PSI 100
+#define MAX_DESC 300
+#define INICIAL 10
 
-typedef struct Historico {
+typedef struct {
+    char nomePaciente[MAX_NOME];
+    char cpf[MAX_CPF];
+    char psicologo[MAX_PSI];
+    char cursoPaciente[MAX_CURSO];
+    char descricao[MAX_DESC];
+} AtendimentoHistorico;
 
-    Atendimento atendimento; 
-    struct Historico* proximo; 
-    
-} Historico; 
+typedef struct Historico{
+    AtendimentoHistorico* atendimentos;
+    int capacidade;
+    int totalAtendimentos;
+} Historico;
 
-Historico* inicializarLista();
-Historico* inserirNoHistorico(Historico* h, Atendimento novoAtendimento);
-void HistoricoPorCurso(Historico* h);//printa o historico por curso
-void HistoricoAtendimentoCPF(Historico* h);//Printa historico por cpf
+// Protótipos
+void inicializarHistorico(Historico* h);
+void destruirHistorico(Historico* h);
+void adicionarAtendimento(Historico* h, char* nomePaciente, char* cpf, char* psicologo, char* cursoPaciente, char* descricao);
+void listarTodosAtendimentos(Historico* h);
+void listarAtendimentosPorCPF(Historico* h, char* cpf);
+void listarAtendimentosPorCurso(Historico* h, char* curso);
 
 #endif

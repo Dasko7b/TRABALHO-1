@@ -1,4 +1,5 @@
 #include "fila.h"
+#include "historico.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -74,8 +75,8 @@ void regitrarChegada(Fila* fila, char nome[100], char CPF[15], char curso[50]) {
     }
 }
 
-// Realiza o atendimento da pessoa na frente da fila e a move para a lista de atendimentos.
-int realizarAtendimento(Fila* fila, Atendimento* cabecaListaAtendimentos, char psicologo[100], char data[10], char resumo[500]) {
+// Realiza o atendimento da pessoa na frente da fila e a move para a lista de atendimentos. //adicionei mais um parametro para essa função , para poder char do historico.c
+int realizarAtendimento(Fila* fila, Historico* h, Atendimento* cabecaListaAtendimentos, char psicologo[100], char data[10], char resumo[500]) {
     if (fila == NULL || fila->nome[0] == '\0') { // Verifica se a fila está vazia
         printf("Fila vazia, nenhum atendimento para realizar.\n");
         return 1;
@@ -109,6 +110,11 @@ int realizarAtendimento(Fila* fila, Atendimento* cabecaListaAtendimentos, char p
         strncpy(cabecaListaAtendimentos->resumo, resumo, 499);
         cabecaListaAtendimentos->resumo[499] = '\0';
         cabecaListaAtendimentos->prox = NULL;
+
+        //chama a função do historico.c
+        adicionarAtendimento(h, cabecaListaAtendimentos->nome, cabecaListaAtendimentos->CPF, 
+                     cabecaListaAtendimentos->psicologo, cabecaListaAtendimentos->curso, 
+                     cabecaListaAtendimentos->resumo);
     } else {
         // Aloca um novo nó para o atendimento.
         Atendimento* novoAtendimento = (Atendimento*)malloc(sizeof(Atendimento));
@@ -137,9 +143,13 @@ int realizarAtendimento(Fila* fila, Atendimento* cabecaListaAtendimentos, char p
             atualAtendimento = atualAtendimento->prox;
         }
         atualAtendimento->prox = novoAtendimento;
+        
+        //chama a função do historico.c
+        adicionarAtendimento(h, novoAtendimento->nome, novoAtendimento->CPF, 
+                     novoAtendimento->psicologo, novoAtendimento->curso, 
+                     novoAtendimento->resumo);
     }
-
-    // Remove a pessoa da Fila.
+ // Remove a pessoa da Fila.
     // Se era a única pessoa na fila (dados estavam no nó cabeça).
     if (fila->proximo == fila) {
         fila->nome[0] = '\0'; // Marca o nó cabeça como "vazio".
