@@ -54,6 +54,7 @@ void listarTodosAtendimentos(Historico* h) {
 // Lista atendimentos por CPF
 void listarAtendimentosPorCPF(Historico* h, char* cpf) {
     int encontrou = 0;
+
     for (int i = 0; i < h->totalAtendimentos; i++) {
         if (strcmp(h->atendimentos[i].cpf, cpf) == 0) {
             if (!encontrou) {
@@ -92,6 +93,30 @@ void listarAtendimentosPorCurso(Historico* h, char* curso) {
     }
     if (!encontrou) {
         printf("Nenhum atendimento encontrado para o curso %s.\n", curso);
+    }
+}
+
+// Lista atendimentos por Psicologo
+void listarAtendimentosPorPsicologo(Historico* h, char* psicologo) {
+    int encontrou = 0;
+
+    for (int i = 0; i < h->totalAtendimentos; i++) {
+        if (strcmp(h->atendimentos[i].psicologo, psicologo) == 0) {
+            if (!encontrou) {
+                printf("\n=== HISTÓRICO DO PSICÓLOGO: %s ===\n", psicologo);
+                encontrou = 1;
+            }
+            printf("Nome: %s | CPF: %s | Psicologo: %s | Curso: %s\nDescricao: %s\n\n",
+                h->atendimentos[i].nomePaciente,
+                h->atendimentos[i].cpf,
+                h->atendimentos[i].psicologo,
+                h->atendimentos[i].cursoPaciente,
+                h->atendimentos[i].descricao);
+        }
+    }
+
+    if (!encontrou) {
+        printf("Nenhum atendimento encontrado para o psicólogo %s.\n", psicologo);
     }
 }
 

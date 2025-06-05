@@ -29,5 +29,6 @@ void adicionarAtendimento(Historico* h, char* nomePaciente, char* cpf, char* psi
 void listarTodosAtendimentos(Historico* h);
 void listarAtendimentosPorCPF(Historico* h, char* cpf);
 void listarAtendimentosPorCurso(Historico* h, char* curso);
+void listarAtendimentosPorPsicologo(Historico* h, char* psicologo);
 
 #endif
