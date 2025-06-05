@@ -56,13 +56,16 @@ void listarAtendimentosPorCPF(Historico* h, char* cpf) {
     int encontrou = 0;
     for (int i = 0; i < h->totalAtendimentos; i++) {
         if (strcmp(h->atendimentos[i].cpf, cpf) == 0) {
+            if (!encontrou) {
+                printf("\n=== HISTÓRICO DO CPF: %s ===\n", cpf);
+                encontrou = 1;
+            }
             printf("Nome: %s | CPF: %s | Psicologo: %s | Curso: %s\nDescricao: %s\n\n",
                 h->atendimentos[i].nomePaciente,
                 h->atendimentos[i].cpf,
                 h->atendimentos[i].psicologo,
                 h->atendimentos[i].cursoPaciente,
                 h->atendimentos[i].descricao);
-            encontrou = 1;
         }
     }
     if (!encontrou) {
@@ -72,6 +75,24 @@ void listarAtendimentosPorCPF(Historico* h, char* cpf) {
 
 // Lista atendimentos por Curso
 void listarAtendimentosPorCurso(Historico* h, char* curso) {
+    int encontrou = 0;
+    for (int i = 0; i < h->totalAtendimentos; i++) {
+        if (strcmp(h->atendimentos[i].cursoPaciente, curso) == 0) {
+            if (!encontrou) {
+                printf("\n=== HISTÓRICO DO CURSO: %s ===\n", curso);
+                encontrou = 1;
+            }
+            printf("Nome: %s | CPF: %s | Psicologo: %s | Curso: %s\nDescricao: %s\n\n",
+                h->atendimentos[i].nomePaciente,
+                h->atendimentos[i].cpf,
+                h->atendimentos[i].psicologo,
+                h->atendimentos[i].cursoPaciente,
+                h->atendimentos[i].descricao);
+        }
+    }
+    if (!encontrou) {
+        printf("Nenhum atendimento encontrado para o curso %s.\n", curso);
+    }
 }
 
 // Libera memória
