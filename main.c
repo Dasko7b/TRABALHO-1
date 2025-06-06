@@ -1,4 +1,3 @@
-//precisa incluir todos esses includes
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,6 +25,8 @@ int main() {
         printf("4. Cancelar atendimento (remover da fila)\n");
         printf("5. Emitir relatorio de todos os atendimentos\n");
         printf("6. Listar fila de espera\n");
+        printf("7. Consultar historico por curso\n");
+        printf("8. Consultar historico por psicologo\n");
         printf("0. Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
@@ -84,12 +85,28 @@ int main() {
                 listarFila(&fila);
                 break;
 
+            case 7:
+                printf("Informe o curso: ");
+                fgets(curso, sizeof(curso), stdin);
+                curso[strcspn(curso, "\n")] = '\0';
+
+                listarAtendimentosPorCurso(&historico, curso);
+                break;
+
+            case 8:
+                printf("Informe o nome do psicologo: ");
+                fgets(psicologo, sizeof(psicologo), stdin);
+                psicologo[strcspn(psicologo, "\n")] = '\0';
+
+                listarAtendimentosPorPsicologo(&historico, psicologo);
+                break;
+
             case 0:
                 printf("Encerrando o sistema...\n");
                 break;
 
             default:
-                printf("Opcao invalida.\n");
+                printf("Opção invalida.\n");
         }
 
     } while (opcao != 0);
