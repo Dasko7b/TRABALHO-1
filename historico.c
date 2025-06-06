@@ -56,7 +56,7 @@ void listarTodosAtendimentos(Historico* h) {
 }
 
 // Lista atendimentos por CPF
-// Feito por Bruno
+// Feito por Thiago
 void listarAtendimentosPorCPF(Historico* h, char* cpf) {
     int encontrou = 0;
 
