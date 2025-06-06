@@ -54,7 +54,7 @@ int main() {
                 fgets(psicologo, sizeof(psicologo), stdin);
                 psicologo[strcspn(psicologo, "\n")] = '\0';
 
-                printf("Data do atendimento (DD/MM/AAAA): ");
+                printf("Data do atendimento (D/M/AA): ");
                 fgets(data, sizeof(data), stdin);
                 data[strcspn(data, "\n")] = '\0';
 
