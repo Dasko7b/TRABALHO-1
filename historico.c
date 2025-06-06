@@ -4,6 +4,7 @@
 #include <string.h>
 
 // Inicializa o histórico
+// Feito por Thiago
 void inicializarHistorico(Historico* h) {
     h->atendimentos = (AtendimentoHistorico*) malloc(INICIAL * sizeof(AtendimentoHistorico));
     h->capacidade = INICIAL;
@@ -11,6 +12,7 @@ void inicializarHistorico(Historico* h) {
 }
 
 // Redimensiona se necessário
+// Feito por Thiago
 void redimensionarHistorico(Historico* h, int novaCapacidade) {
     AtendimentoHistorico* temp = (AtendimentoHistorico*) realloc(h->atendimentos, novaCapacidade * sizeof(AtendimentoHistorico));
     if (temp == NULL) {
@@ -22,6 +24,7 @@ void redimensionarHistorico(Historico* h, int novaCapacidade) {
 }
 
 // Adiciona um atendimento
+// Feito por Thiago
 void adicionarAtendimento(Historico* h, char* nomePaciente, char* cpf, char* psicologo, char* cursoPaciente, char* descricao) {
     if (h->totalAtendimentos == h->capacidade) {
         redimensionarHistorico(h, h->capacidade * 2);
@@ -40,6 +43,7 @@ void adicionarAtendimento(Historico* h, char* nomePaciente, char* cpf, char* psi
 }
 
 // Lista todos os atendimentos
+// Feito por Bruno
 void listarTodosAtendimentos(Historico* h) {
     for (int i = 0; i < h->totalAtendimentos; i++) {
         printf("Nome: %s | CPF: %s | Psicologo: %s | Curso: %s\nDescricao: %s\n\n",
@@ -52,6 +56,7 @@ void listarTodosAtendimentos(Historico* h) {
 }
 
 // Lista atendimentos por CPF
+// Feito por Bruno
 void listarAtendimentosPorCPF(Historico* h, char* cpf) {
     int encontrou = 0;
 
@@ -75,6 +80,7 @@ void listarAtendimentosPorCPF(Historico* h, char* cpf) {
 }
 
 // Lista atendimentos por Curso
+// Feito por Bruno
 void listarAtendimentosPorCurso(Historico* h, char* curso) {
     int encontrou = 0;
     for (int i = 0; i < h->totalAtendimentos; i++) {
@@ -97,6 +103,7 @@ void listarAtendimentosPorCurso(Historico* h, char* curso) {
 }
 
 // Lista atendimentos por Psicologo
+// Feito por Bruno
 void listarAtendimentosPorPsicologo(Historico* h, char* psicologo) {
     int encontrou = 0;
 
@@ -121,6 +128,7 @@ void listarAtendimentosPorPsicologo(Historico* h, char* psicologo) {
 }
 
 // Libera memória
+// Feito por Thiago
 void destruirHistorico(Historico* h) {
     free(h->atendimentos);
     h->atendimentos = NULL;
