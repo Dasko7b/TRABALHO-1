@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+//Matheus josé
 // Inicializa a fila (o nó cabeça).
 // O nó cabeça aponta para si mesmo e seu nome é marcado como vazio.
 int iniciarFila(Fila* fila) {
@@ -16,7 +17,7 @@ int iniciarFila(Fila* fila) {
     fila->curso[0] = '\0';
     return 0;
 }
-
+//Mathues josé
 // Inicializa a lista de atendimentos (o nó cabeça).
 // O próximo é nulo e o nome é marcado como vazio.
 // Nota: O nome da função no header fornecido é "inicarAtendimentos".
@@ -33,7 +34,7 @@ int inicarAtendimentos(Atendimento* atendimento) {
     atendimento->resumo[0] = '\0';
     return 0;
 }
-
+//Dyego Dasko
 // Registra a chegada de uma nova pessoa na fila.
 void regitrarChegada(Fila* fila, char nome[100], char CPF[15], char curso[50]) {
     if (fila == NULL) {
@@ -74,7 +75,7 @@ void regitrarChegada(Fila* fila, char nome[100], char CPF[15], char curso[50]) {
         iterador->proximo = novoNoFila; // O antigo último nó aponta para o novo nó.
     }
 }
-
+//Dyego Dasko
 // Realiza o atendimento da pessoa na frente da fila e a move para a lista de atendimentos. //adicionei mais um parametro para essa função , para poder char do historico.c
 int realizarAtendimento(Fila* fila, Historico* h, Atendimento* cabecaListaAtendimentos, char psicologo[100], char data[10], char resumo[500]) {
     if (fila == NULL || fila->nome[0] == '\0') { // Verifica se a fila está vazia
@@ -174,7 +175,7 @@ int realizarAtendimento(Fila* fila, Historico* h, Atendimento* cabecaListaAtendi
     printf("Atendimento registrado e pessoa removida da fila.\n");
     return 0;
 }
-
+//Dyego Dasko
 // Remove a pessoa da frente da fila (sem registrar atendimento).
 int removerDaFila(Fila* fila) {
     if (fila == NULL || fila->nome[0] == '\0') { // Verifica se a fila está vazia
@@ -208,7 +209,7 @@ int removerDaFila(Fila* fila) {
     }
     return 0;
 }
-
+//Matheus josé
 // Lista todas as pessoas atualmente na fila.
 void listarFila(Fila* fila) {
     if (fila == NULL || fila->nome[0] == '\0') { // Verifica se a fila está vazia
