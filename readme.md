@@ -12,9 +12,6 @@ O sistema também deve manter um registro histórico dos atendimentos realizados
 - [ ]	Cancelar atendimento
 - [ ] Emitir relatório dos atendimentos realizados
 
-## Estruturas de Dados Utilizadas
-
-
 ## Estrutura dos Arquivos do Projeto
 
 O projeto está organizado nos seguintes arquivos principais:
